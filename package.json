@@ -1,0 +1,26 @@
+{
+  "name": "assignment_23march",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./server.js localhost 3030"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dipalipatkar1995/Assignment_23March.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dipalipatkar1995/Assignment_23March/issues"
+  },
+  "homepage": "https://github.com/dipalipatkar1995/Assignment_23March#readme",
+  "dependencies": {
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
