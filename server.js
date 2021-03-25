@@ -18,43 +18,48 @@ const http = require('http')
 const qs = require('querystring') 
 const url = require('url') 
 
-const Users = require('./dbConnection');
+// const Users = require('./dbConnection');
 
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 3030
 
 const server = http.createServer((req, res) => {
-    if (req.method === 'GET') {
+    console.log("req.method",req.method +""+req.url);
+    if (req.method === 'POST' && req.url === '/book/get') {
         return handleGetReq(req, res)
-    } else if (req.method === 'POST' && req.url === '/user/add') {
+    } else if (req.method === 'POST' && req.url === '/book/add') {
         return handlePostReq(req, res)
-    } else if (req.method === 'POST' && req.url === '/user/delete') {
+    } else if (req.method === 'POST' && req.url === '/book/delete') {
         return handleDeleteReq(req, res)
-    } else if (req.method === 'POST' && req.url === '/user/update') {
+    } else if (req.method === 'POST' && req.url === '/book/update') {
         return handlePutReq(req, res)
     }
 })
 
 function handleGetReq(req, res) {
     const { pathname } = url.parse(req.url)
-    if (pathname !== '/users') {
+    if (pathname !== '/book/get') {
         return handleError(res, 404)
     }
-    res.setHeader('Content-Type', 'application/json;charset=utf-8');
-    return res.end(JSON.stringify(Users.getUsers()))
+    var sql2 = "select * from  book order by id ";
+    con.query(sql2, function (err, data) {
+        if (err) throw err; 
+        res.setHeader('Content-Type', 'application/json;charset=utf-8');
+        res.end(JSON.stringify(data))
+    })
 }
 
 function handlePostReq(req, res) {
 var result = {};
 const { pathname } = url.parse(req.url)
-    if (pathname !== '/user/add') {
+    if (pathname !== '/book/add') {
         return handleError(res, 404)
     }
     let body = '';
     req 
     .on('data', (chunk) => {         
     body = chunk.toString(); // convert Buffer to string
- }) 
+}) 
     .on('end', () => { 
         result.data = JSON.parse(body);
         con.on('error', function(err) {
@@ -67,7 +72,7 @@ const { pathname } = url.parse(req.url)
             con.query(sql2, function (err, data) {
                 if (err) throw err; 
                 res.setHeader('Content-Type', 'application/json;charset=utf-8');
-                res.end(JSON.stringify(data))
+                res.end(JSON.stringify(data));
 
             })
 
@@ -79,7 +84,7 @@ function handleDeleteReq(req, res) {
     var result = {};
     var userUpdated = {};
     const { pathname, query } = url.parse(req.url)
-    if (pathname !== '/user/delete') {
+    if (pathname !== '/book/delete') {
         return handleError(res, 404)
     }
 
@@ -116,7 +121,7 @@ function handlePutReq(req, res) {
     var result  ={};
     var userUpdated ={};
     const { pathname, query } = url.parse(req.url)
-    if (pathname !== '/user/update') {
+    if (pathname !== '/book/update') {
         return handleError(res, 404)
     }
     let body = '';

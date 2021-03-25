@@ -1,0 +1,84 @@
+URL:-
+http://localhost:3030/book/get
+
+Method:-POST
+
+Res:-
+[
+    {
+        "id": 1,
+        "author": "first1Updated",
+        "title": "last1",
+        "isbn": "abc",
+        "release_date": "2019-12-31T18:30:00.000Z"
+    },
+]
+
+==========================================
+
+URL:-
+
+http://localhost:3030/book/add
+
+Method:-POST
+
+Req:-
+
+   {
+   	     
+        "author": "NEWUSER",
+        "title": "VIJAY",
+        "isbn": "abcII",
+        "release_date":"2021-01-01"
+        
+     }
+        
+        	
+Res:-
+
+[
+    {
+        "id": 15,
+        "author": "NEWUSER",
+        "title": "VIJAY",
+        "isbn": "abcII",
+        "release_date": "2020-12-31T18:30:00.000Z"
+    }
+]
+
+==============================================
+
+URL:-
+
+http://localhost:3030/book/delete
+
+Req:-
+   {"bookId": 15}
+Res:-
+
+{
+    "userDeleted": true
+}
+
+=====================================
+
+URL:-
+
+http://localhost:3030/book/update
+
+Req:-
+   {
+   	     
+        "bookId": 9,
+        "title": "VIJAY-Updated",
+        "isbn": "abcII",
+        "release_date":"2021-01-01"
+        
+     }
+        
+        
+res:-
+
+{
+    "userUpdated": true
+}		
