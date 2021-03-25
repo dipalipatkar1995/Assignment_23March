@@ -1,0 +1,24 @@
+Software Requirements:-
+
+Node.js 
+MYSQL
+
+1.How to install:-
+
+Clone the project from github. 
+
+git clone https://github.com/dipalipatkar1995/Assignment_23March.git
+
+
+
+2.Install npm dependencies after installing (Git or manual download)
+
+cd myproject
+npm install
+
+
+3.Download and install docker
+
+https://docs.docker.com/docker-for-windows/install/
+
+4.docker-compose up 

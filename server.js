@@ -1,10 +1,19 @@
 var mysql = require('mysql');
 
+
+var mysqlPort = process.env.MYSQL_PORT || 3306;
+var mysqlHost = process.env.MYSQL_HOST || 'mysqldb';
+var host = process.env.HOST || 'localhost';
+var port = process.env.PORT || 3030;
+var db = process.env.MYSQL_DB_NAME || 'shoppingpal';
+var user = process.env.MYSQL_DB_USER || 'root';
+var password = process.env.MYSQL_DB_PASSWORD ||'root';
+
 var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database :"shoppingpal"
+  host: host,
+  user: user,
+  password: password,
+  database :db
 });
 
 con.connect(function(err) {
@@ -15,16 +24,9 @@ con.connect(function(err) {
 
 
 const http = require('http')
-const qs = require('querystring') 
-const url = require('url') 
-
-// const Users = require('./dbConnection');
-
-const host = process.env.HOST || '0.0.0.0'
-const port = process.env.PORT || 3030
-
+const url = require('url')
+ 
 const server = http.createServer((req, res) => {
-    console.log("req.method",req.method +""+req.url);
     if (req.method === 'POST' && req.url === '/book/get') {
         return handleGetReq(req, res)
     } else if (req.method === 'POST' && req.url === '/book/add') {
