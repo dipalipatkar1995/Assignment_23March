@@ -1,147 +1,17 @@
-// const http = require('http')
-// const qs = require('querystring') 
-// const url = require('url') 
-// const Users = require('./dbConnection');
+var mysql = require('mysql');
 
-// const host = process.env.HOST || '0.0.0.0'
-// const port = process.env.PORT || 3030
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "root",
+  database :"shoppingpal"
+});
 
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
 
-
-// const server = http.createServer((req, res) => {
-//   var result = {};
-//     if(req.url ==='/users' && req.method === 'POST'){
-//         return handleGetReq(req, res)
-//     }
-
-//     else if(req.url === '/users/add' && req.method === 'POST'){
-//         console.log("coming into the 2nd if part")
-//         return handlePostReq(req, res)
-//        }
-
-//        else if(req.url === '/users/update' && req.method === 'POST')
-//        {
-//         console.log("coming into the 3nd if part")
-
-//         return handlePutReq(req, res)
-
-//        }
-
-//          else if (req.method === 'DELETE') {
-//         return handleDeleteReq(req, res)
-//     }
-//     // else{
-//     //     result.status = false;
-//     //     result.msg = 'check method or url';
-//     //     res.setHeader('Content-Type', 'application/json;charset=utf-8');
-//     //     return res.end(JSON.stringify(result))
-//     // }
-//     if (req.url !== '/users' && req.method === 'POST') {
-//         return handleError(res, 404)
-//     }
-   
-//     // if (req.method === 'GET') {
-//     //     return handleGetReq(req, res)
-//     // } else if (req.method === 'POST') {
-//     //     return handlePostReq(req, res)
-//     // } else if (req.method === 'DELETE') {
-//     //     return handleDeleteReq(req, res)
-//     // } else if (req.method === 'PUT') {
-//     //     return handlePutReq(req, res)
-//     // }
-// })
-
-// function handleGetReq(req, res) {
-//     const { pathname } = url.parse(req.url)
-//     // if (pathname !== '/users') {
-//     //     return handleError(res, 404)
-//     // }
-//     res.setHeader('Content-Type', 'application/json;charset=utf-8');
-//     return res.end(JSON.stringify(Users.getUsers()))
-// }
-
-// function handlePostReq(req, res) {
-
-//     const size = parseInt(req.headers['content-length'], 10)
-//     const buffer = Buffer.allocUnsafe(size)
-//     var pos = 0
-
-//     // const { pathname } = url.parse(req.url)
-
-//     req 
-//     .on('data', (chunk) => { 
-//       const offset = pos + chunk.length 
-//       if (offset > size) { 
-//         reject(413, 'Too Large', res) 
-//         return 
-//       } 
-//       chunk.copy(buffer, pos) 
-//       pos = offset 
-//     }) 
-//     .on('end', () => { 
-//       if (pos !== size) { 
-//         reject(400, 'Bad Request', res) 
-//         return 
-//       } 
-//       const data = JSON.parse(buffer.toString())
-      
-//       Users.saveUser(data)
-//       console.log('User Posted: ', data) 
-//       res.setHeader('Content-Type', 'application/json;charset=utf-8');
-//       res.end('You Posted: ' + JSON.stringify(data))
-//     })
-// }
-
-// function handleDeleteReq(req, res) {
-//     const { pathname, query } = url.parse(req.url)
-//     if (pathname !== '/user') {
-//         return handleError(res, 404)
-//     }
-//     const { id } = qs.parse(query)
-//     const userDeleted = Users.deleteUser(id);
-//     res.setHeader('Content-Type', 'application/json;charset=utf-8');
-//     res.end(`{"userDeleted": ${userDeleted}}`)
-// }
-
-// function handlePutReq(req, res) {
-    
-//      const { pathname, query } = url.parse(req.url)
-  
-//     const { id } = qs.parse(query)
-//     const size = parseInt(req.headers['content-length'], 10)
-//     const buffer = Buffer.allocUnsafe(size)
-//     var pos = 0
-//     req 
-//     .on('data', (chunk) => { 
-//       const offset = pos + chunk.length 
-//       if (offset > size) { 
-//         reject(413, 'Too Large', res) 
-//         return 
-//       } 
-//       chunk.copy(buffer, pos) 
-//       pos = offset 
-//     }) 
-//     .on('end', () => { 
-//       if (pos !== size) { 
-//         reject(400, 'Bad Request', res) 
-//         return 
-//       } 
-//       const data = JSON.parse(buffer.toString())
-      
-//       const userUpdated = Users.replaceUser(id, data);
-//       res.setHeader('Content-Type', 'application/json;charset=utf-8');
-//       res.end(`{"userUpdated": ${userUpdated}}`)
-//     })
-// }
-
-// function handleError (res, code) { 
-//     res.statusCode = code 
-//     res.end(`{"error": "${http.STATUS_CODES[code]}"}`) 
-// } 
-
-// server.listen(port, () => {
-//     console.log(`Server listening on port ${port}`)
-// });
 
 
 const http = require('http')
@@ -156,11 +26,11 @@ const port = process.env.PORT || 3030
 const server = http.createServer((req, res) => {
     if (req.method === 'GET') {
         return handleGetReq(req, res)
-    } else if (req.method === 'POST') {
+    } else if (req.method === 'POST' && req.url === '/user/add') {
         return handlePostReq(req, res)
-    } else if (req.method === 'POST') {
+    } else if (req.method === 'POST' && req.url === '/user/delete') {
         return handleDeleteReq(req, res)
-    } else if (req.method === 'POST') {
+    } else if (req.method === 'POST' && req.url === '/user/update') {
         return handlePutReq(req, res)
     }
 })
@@ -175,82 +45,107 @@ function handleGetReq(req, res) {
 }
 
 function handlePostReq(req, res) {
-
-    const size = parseInt(req.headers['content-length'], 10)
-    const buffer = Buffer.allocUnsafe(size)
-    var pos = 0
-
-    const { pathname } = url.parse(req.url)
-    if (pathname !== '/user') {
+var result = {};
+const { pathname } = url.parse(req.url)
+    if (pathname !== '/user/add') {
         return handleError(res, 404)
     }
-
+    let body = '';
     req 
-    .on('data', (chunk) => { 
-      const offset = pos + chunk.length 
-      if (offset > size) { 
-        reject(413, 'Too Large', res) 
-        return 
-      } 
-      chunk.copy(buffer, pos) 
-      pos = offset 
-    }) 
+    .on('data', (chunk) => {         
+    body = chunk.toString(); // convert Buffer to string
+ }) 
     .on('end', () => { 
-      if (pos !== size) { 
-        reject(400, 'Bad Request', res) 
-        return 
-      } 
-      const data = JSON.parse(buffer.toString())
-      
-      Users.saveUser(data)
-      console.log('User Posted: ', data) 
-      res.setHeader('Content-Type', 'application/json;charset=utf-8');
-      res.end('You Posted: ' + JSON.stringify(data))
-    })
+        result.data = JSON.parse(body);
+        con.on('error', function(err) {
+            console.log("[mysql error]",err);
+          });
+        var sql = "INSERT INTO book(author, title,isbn,release_date) VALUES ('"+(result.data.author)+"','"+(result.data.title)+"','"+(result.data.isbn)+"','"+(result.data.release_date)+"')";
+         con.query(sql, function (err, data) {
+            if (err) throw err; // Check for the error and throw if it exists.
+            var sql2 = "select * from  book order by id desc limit 1";
+            con.query(sql2, function (err, data) {
+                if (err) throw err; 
+                res.setHeader('Content-Type', 'application/json;charset=utf-8');
+                res.end(JSON.stringify(data))
+
+            })
+
+        });       
+      })
 }
 
 function handleDeleteReq(req, res) {
+    var result = {};
+    var userUpdated = {};
     const { pathname, query } = url.parse(req.url)
-    if (pathname !== '/user') {
+    if (pathname !== '/user/delete') {
         return handleError(res, 404)
     }
-    const { id } = qs.parse(query)
-    const userDeleted = Users.deleteUser(id);
-    res.setHeader('Content-Type', 'application/json;charset=utf-8');
-    res.end(`{"userDeleted": ${userDeleted}}`)
+
+    let body = '';
+    req 
+    .on('data', (chunk) => {         
+    body = chunk.toString(); // convert Buffer to string
+ }) 
+    .on('end', () => { 
+        result.data = JSON.parse(body);
+        con.on('error', function(err) {
+            console.log("[mysql error]",err);
+          });
+        var sql = "DELETE from book where id =  '"+(result.data.bookId)+"'";
+         con.query(sql, function (err, data) {
+            if (err) throw err; // Check for the error and throw if it exists.
+            userUpdated.row = JSON.parse(JSON.stringify(data));
+           
+             if(userUpdated.row.affectedRows == 1){
+                res.setHeader('Content-Type', 'application/json;charset=utf-8');
+                res.end(`{"userDeleted": ${true}}`)
+             }
+             else{
+                res.setHeader('Content-Type', 'application/json;charset=utf-8');
+                res.end(`{"userDeleted": ${false}}`)
+             }
+            
+        });       
+      })
+   
 }
 
 function handlePutReq(req, res) {
-    
+    var result  ={};
+    var userUpdated ={};
     const { pathname, query } = url.parse(req.url)
-    if (pathname !== '/user') {
+    if (pathname !== '/user/update') {
         return handleError(res, 404)
     }
-    const { id } = qs.parse(query)
-    const size = parseInt(req.headers['content-length'], 10)
-    const buffer = Buffer.allocUnsafe(size)
-    var pos = 0
+    let body = '';
     req 
-    .on('data', (chunk) => { 
-      const offset = pos + chunk.length 
-      if (offset > size) { 
-        reject(413, 'Too Large', res) 
-        return 
-      } 
-      chunk.copy(buffer, pos) 
-      pos = offset 
-    }) 
+    .on('data', (chunk) => {         
+    body = chunk.toString(); // convert Buffer to string
+ }) 
     .on('end', () => { 
-      if (pos !== size) { 
-        reject(400, 'Bad Request', res) 
-        return 
-      } 
-      const data = JSON.parse(buffer.toString())
-      
-      const userUpdated = Users.replaceUser(id, data);
-      res.setHeader('Content-Type', 'application/json;charset=utf-8');
-      res.end(`{"userUpdated": ${userUpdated}}`)
-    })
+        result.data = JSON.parse(body);
+        con.on('error', function(err) {
+            console.log("[mysql error]",err);
+          });
+        var sql = "Update book set author = '"+(result.data.author)+"' , title = '"+(result.data.title)+"',isbn = '"+(result.data.isbn)+"',release_date = '"+(result.data.release_date)+"'  where id =  '"+(result.data.bookId)+"'";
+         con.query(sql, function (err, data) {
+            if (err) throw err; // Check for the error and throw if it exists.
+            userUpdated.row = JSON.parse(JSON.stringify(data));
+           
+             if(userUpdated.row.affectedRows == 1){
+                res.setHeader('Content-Type', 'application/json;charset=utf-8');
+                res.end(`{"userUpdated": ${true}}`)
+             }
+             else{
+                res.setHeader('Content-Type', 'application/json;charset=utf-8');
+                res.end(`{"userUpdated": ${false}}`)
+             }
+            
+        });       
+      })
+   
 }
 
 function handleError (res, code) { 

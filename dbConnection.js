@@ -3,10 +3,10 @@
   
 
 let users = [
-    {id: 1, firstName: "first1", lastName: "last1", email: "abc@gmail.com"},
-    {id: 2, firstName: "first2", lastName: "last2", email: "abc@gmail.com"},
-    {id: 3, firstName: "first3", lastName: "last3", email: "abc@gmail.com"},
-    {id: 4, firstName: "first4", lastName: "last4", email: "abc@gmail.com"}
+    {id: 1, author: "Darshan", title: "Destiny", ISBN: "ABCD",release_date:"2020-10-01"},
+    {id: 2, author: "Shubham", title: "Bajirao", ISBN: "EFGH",release_date:"2020-11-01"},
+    {id: 3, author: "Aslam", title: "freedom", ISBN: "IJKL",release_date:"2020-12-01"},
+    {id: 4, author: "Vijay", title: "Vijaywada", ISBN: "MNLO",release_date:"2020-09-01"}
 ]
 
 function getUsers() {

@@ -1,0 +1,26 @@
+version: '3.8'
+
+services: 
+  nodejs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3030:3030"  
+    # environment:
+    #  NODE_ENV: development
+    #  APPLICATION_PORT : 3005
+    #  MYSQL_PORT : 3306
+    #  MYSQL_HOST: mysqldb
+    #  MYSQL_DB_NAME: shoppinpal
+    #  MYSQL_DB_USER: root
+    #  MYSQL_DB_PASSWORD: root
+  #   depends_on:
+  #     - mysqldb 
+  # mysqldb:
+  #   image: mysql
+  #   command: --default-authentication-plugin=mysql_native_password
+  #   restart: always
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_DATABASE: shoppinpal
