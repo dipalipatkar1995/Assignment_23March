@@ -10,7 +10,8 @@ var user = process.env.MYSQL_DB_USER || 'root';
 var password = process.env.MYSQL_DB_PASSWORD ||'root';
 
 var con = mysql.createConnection({
-  host: host,
+  host: mysqlHost,
+  port: mysqlPort,
   user: user,
   password: password,
   database :db
@@ -19,13 +20,18 @@ var con = mysql.createConnection({
 con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
+  var sql = "CREATE TABLE IF NOT EXISTS book ( id int(6) unsigned NOT NULL AUTO_INCREMENT,author varchar(30) NOT NULL,title varchar(30) NOT NULL,isbn varchar(30) NOT NULL,release_date date DEFAULT NULL,PRIMARY KEY (id))";
+  con.query(sql, function (err, result) {
+    if (err) throw err;
+    console.log("Table created");
+  });
 });
 
 
 
 const http = require('http')
 const url = require('url')
- 
+
 const server = http.createServer((req, res) => {
     if (req.method === 'POST' && req.url === '/book/get') {
         return handleGetReq(req, res)
