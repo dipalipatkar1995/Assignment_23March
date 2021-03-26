@@ -12,7 +12,7 @@ git clone https://github.com/dipalipatkar1995/Assignment_23March.git
 
 ## Download and install docker
 
-https://docs.docker.com/docker-for-windows/install/
+https://docs.docker.com/desktop/#download-and-install
 
 
 ## Run Application
