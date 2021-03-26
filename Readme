@@ -22,3 +22,6 @@ npm install
 https://docs.docker.com/docker-for-windows/install/
 
 4.docker-compose up 
+or
+docker-compose up mysqldb
+docker-compose  up  nodejs
